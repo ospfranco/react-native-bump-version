@@ -15,6 +15,7 @@ set -ex
 
 npm --no-git-tag-version version patch
 
+# DON'T BE SILLY REPLACE THIS FOR YOUR DIRECTORY
 PROJECT_DIR="macos/cidemon-macOS"
 INFOPLIST_FILE="Info.plist"
 INFOPLIST_DIR="${PROJECT_DIR}/${INFOPLIST_FILE}"
@@ -37,6 +38,23 @@ git tag $PACKAGE_VERSION
 git push
 ```
 
-# TODO
+# Android
 
-Add android part of the script
+On android you can add the following function on `app/build.gradle`, and the replace the version string with the function call:
+
+```gradle
+def getNpmVersion() {
+    def inputFile = new File(projectDir.getPath() + "/../../package.json")
+    def packageJson = new JsonSlurper().parseText(inputFile.text)
+    return packageJson["version"]
+}
+
+// Later down in your config
+def userVer = getNpmVersion()
+
+defaultConfig {
+    ... STUFF
+    versionName userVer
+    ... MORE STUFF
+}
+```
