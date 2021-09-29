@@ -1,14 +1,3 @@
-# react-native-bump-version
-
-This is the script I use to automatically bump versions on the JavaScript package.json, iOS/macOS Plist and Android Gradle.
-
-Add it to your package.json `scripts` under `yarn bump`
-
-```json
-'bump': './bump_version.sh'
-```
-
-```bash
 #!/bin/bash
 
 set -ex
@@ -35,8 +24,3 @@ git commit -m "Bump version"
 git tag $PACKAGE_VERSION
 
 git push
-```
-
-# TODO
-
-Add android part of the script
