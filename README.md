@@ -2,9 +2,9 @@
 
 This is the script I use to automatically bump versions on the JavaScript package.json, iOS/macOS Plist and Android Gradle.
 
-Add it to your package.json `scripts` under `yarn bump`
+Create a file `./bump.sh` on the root of the RN project and add a new npm script command:
 
-```json
+```
 'bump': './bump_version.sh'
 ```
 
@@ -43,7 +43,8 @@ git push
 On android you can add the following function on `app/build.gradle`, and the replace the version string with the function call:
 
 ```gradle
-import groovy.json.JsonSlurper # at the beginning of the file
+# at the beginning of the file
+import groovy.json.JsonSlurper 
 
 # later define this functions
 def getNpmVersion() {
