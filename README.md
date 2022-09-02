@@ -43,18 +43,36 @@ git push
 On android you can add the following function on `app/build.gradle`, and the replace the version string with the function call:
 
 ```gradle
+import groovy.json.JsonSlurper # at the beginning of the file
+
+# later define this functions
 def getNpmVersion() {
     def inputFile = new File(projectDir.getPath() + "/../../package.json")
     def packageJson = new JsonSlurper().parseText(inputFile.text)
     return packageJson["version"]
 }
 
+def getGitVersion() {
+    new ByteArrayOutputStream().withStream { os ->
+      exec {
+        workingDir projectDir.getPath()
+        commandLine "sh", "-c", "git rev-list --tags --count"
+        standardOutput os
+      }
+
+      return os.toString().toInteger() + 500
+    }
+}
+
 // Later down in your config
-def userVer = getNpmVersion()
+def userVersion = getNpmVersion()
+def tagVersion = getGitVersion()
 
 defaultConfig {
-    ... STUFF
-    versionName userVer
-    ... MORE STUFF
+    ...
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode tagVersion #change this
+    versionName userVer #change this
+    ...
 }
 ```
